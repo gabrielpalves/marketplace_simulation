@@ -1,0 +1,17 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments
+venv/
+env/
+.env
+
+# Data and Logs (we want to keep the code, not necessarily the massive sim logs)
+logs/
+*.log
+market_data/
+
+# OS files
+.DS_Store
