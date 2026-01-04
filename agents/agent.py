@@ -24,17 +24,34 @@ class TradingAgent:
         recent_memories = self.memory.retrieve_relevant_memories("current_market", limit=2)
         
         # 3. Construct the Prompt
+        # Inside agents/agent.py, update the prompt string:
         prompt = f"""
         You are {self.name}, {self.role}.
         Current Budget: ${self.budget}
         Current Inventory: {self.inventory}
-        
+
         Recent Memories: {recent_memories}
         Market Offers: {market_state}
-        
+
         What is your move? You can 'buy [offer_id]', 'post [item] [price] [qty]', or 'wait'.
+
+        IMPORTANT: 
+        1. The 'params' field must contain ONLY raw numbers or strings. 
+        2. DO NOT include mathematical expressions like "250 / 0.4" in the JSON. Perform all calculations before generating the JSON.
+        3. If you want to buy, specify the exact 'quantity' as a number.
+
         Respond ONLY in JSON format:
-        {{"reasoning": "...", "command": "...", "params": {{}}}}
+        {{
+            "reasoning": "Explain your logic here",
+            "command": "buy" | "post" | "wait",
+            "params": {{
+                "offer_id": int (if buying),
+                "item": "string" (if posting),
+                "price": float (if posting),
+                "qty": float (if posting),
+                "quantity": float (if buying)
+            }}
+        }}
         """
 
         # 4. Call the LLM
@@ -65,15 +82,22 @@ class TradingAgent:
             if "buy" in command:
                 offer_id = params.get("offer_id")
                 result = self.market.execute_trade(self.name, offer_id)
+                
                 if result["status"] == "success":
                     # Update internal state if trade was successful
                     item = result["data"]["item"]
                     price = result["data"]["price"]
                     self.budget -= price
                     self.inventory[item] = self.inventory.get(item, 0) + result["data"]["quantity"]
-                    self.memory.add_memory(f"Bought {item} for ${price}", importance=5)
-                    print(f"✅ Trade Successful! New Budget: ${self.budget}")
+                    
+                    self.memory.add_memory(
+                        f"Successfully bought {item} from {result['data']['seller']} for ${price}. Budget is now ${self.budget}.",
+                        importance=7,
+                        metadata={"partner": result['data']['seller'], "type": "trade_success"}
+                    )
+                    print(f"✅ [{self.name}] Trade Success!")
                 else:
+                    self.memory.add_memory(f"Attempted to buy offer {offer_id} but failed.", importance=4)
                     print(f"❌ Trade Failed: {result['message']}")
 
             elif "post" in command:
@@ -81,7 +105,7 @@ class TradingAgent:
                 price = params.get("price")
                 qty = params.get("qty")
                 self.market.post_offer(self.name, item, price, qty)
-                self.memory.add_memory(f"Posted {qty} {item} for ${price}", importance=3)
+                self.memory.add_memory(f"Posted an offer to sell {params.get('item')} for ${params.get('price')}.", importance=3)
                 print(f"📢 Posted offer for {qty} {item}")
 
             else:
