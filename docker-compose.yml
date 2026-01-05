@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  simulation:
+    build: .
+    container_name: marketplace_simulation
+    env_file:
+      - .env
+    volumes:
+      - ./logs:/app/logs
+    environment:
+      - GROQ_API_KEY=${GROQ_API_KEY}

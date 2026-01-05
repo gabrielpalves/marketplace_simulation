@@ -1,0 +1,11 @@
+.git
+.gitignore
+__pycache__
+*.pyc
+venv
+.env
+logs/*.csv
+logs/*.json
+logs/*.png
+logs/*.txt
+!logs/.gitkeep
