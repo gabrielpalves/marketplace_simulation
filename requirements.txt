@@ -1,5 +1,14 @@
-pydantic          # For data validation (crucial for Agent JSONs)
-python-dotenv     # To manage API keys
-openai            # The standard client for LLM calls (works with Groq/OpenRouter)
-matplotlib        # For your simulation plots
-pandas            # For the transaction ledger
+# Core Dependencies
+groq>=0.4.0
+python-dotenv>=1.0.0
+
+# Data Processing
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Visualization
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# Optional: for enhanced analytics
+scipy>=1.10.0

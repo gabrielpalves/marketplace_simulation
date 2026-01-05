@@ -11,22 +11,23 @@ class MarketWorld:
         # Ensure log directory exists
         os.makedirs("logs", exist_ok=True)
         
-        # Initialize an empty Ledger
-        self.ledger = pd.DataFrame(columns=[
-            "timestamp", "seller", "buyer", "item", "price", "quantity"
-        ])
+        # Initialize an empty Ledger (no need to specify columns upfront)
+        self.ledger = pd.DataFrame()
         
         # Active offers on the "Bulletin Board"
         self.active_offers = []
+        self.offer_counter = 0  # Monotonic counter for offer IDs
 
     def post_offer(self, seller_name, item, price, quantity):
         """Allows an agent to list something for sale."""
+        self.offer_counter += 1
+        
         offer = {
-            "offer_id": len(self.active_offers) + 1,
+            "offer_id": self.offer_counter,
             "seller": seller_name,
             "item": item,
-            "price": price,
-            "quantity": quantity,
+            "price": float(price),
+            "quantity": float(quantity),
             "timestamp": datetime.now().isoformat()
         }
         self.active_offers.append(offer)
@@ -46,12 +47,20 @@ class MarketWorld:
             "seller": offer["seller"],
             "buyer": buyer_name,
             "item": offer["item"],
-            "price": offer["price"],
-            "quantity": offer["quantity"]
+            "price": float(offer["price"]),
+            "quantity": float(offer["quantity"])
         }
         
-        # Add to pandas dataframe and save to CSV
-        self.ledger = pd.concat([self.ledger, pd.DataFrame([new_trade])], ignore_index=True)
+        # FIXED: Use _append method which is cleaner
+        new_row = pd.DataFrame([new_trade])
+        
+        if self.ledger.empty:
+            # First trade - just assign
+            self.ledger = new_row
+        else:
+            # Subsequent trades - concatenate
+            self.ledger = pd.concat([self.ledger, new_row], ignore_index=True)
+        
         self.ledger.to_csv(self.ledger_path, index=False)
         
         # Remove offer from active board
