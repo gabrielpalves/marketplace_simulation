@@ -35,7 +35,7 @@ class MarketSimulation:
             print(f"\n--- {agent.name} is thinking... ---")
             agent.step()
             # Small delay to avoid hitting Groq API rate limits
-            time.sleep(3) 
+            # time.sleep(1)
 
         print(f"\n✅ End of Tick {tick_number}. Total Trades in Ledger: {len(self.market.ledger)}")
 
@@ -72,4 +72,4 @@ class MarketSimulation:
 
 if __name__ == "__main__":
     sim = MarketSimulation()
-    sim.run(total_ticks=3)  # Start with 3 ticks for testing
+    sim.run(total_ticks=10)

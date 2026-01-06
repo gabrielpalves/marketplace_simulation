@@ -35,10 +35,10 @@ wheels/
 *~
 
 # Logs (keep directory but ignore contents)
-logs/*.csv
-logs/*.json
-logs/*.png
-logs/*.txt
+!logs/*.csv
+!logs/*.json
+!logs/*.png
+!logs/*.txt
 !logs/.gitkeep
 
 # OS

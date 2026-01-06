@@ -130,15 +130,22 @@ class TradingAgent:
         }}
         """
 
-        # 4. Call the LLM
-        completion = self.client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
-            messages=[{"role": "user", "content": prompt}],
-            response_format={"type": "json_object"}
-        )
-        
-        decision = completion.choices[0].message.content
-        return decision
+        try:
+            # 4. Call the LLM
+            completion = self.client.chat.completions.create(
+                model="llama-3.1-8b-instant",
+                messages=[{"role": "user", "content": prompt}],
+                response_format={"type": "json_object"}
+            )
+            return completion.choices[0].message.content
+        except Exception as e:
+            # NEW: Catch the crash and return a safe 'wait' command
+            print(f"⚠️ [{self.name}] API/JSON Error: {e}")
+            return json.dumps({
+                "reasoning": "System error or JSON hallucination caught.",
+                "command": "wait",
+                "params": {}
+            })
     
     def step(self):
         """One complete turn: Perceive -> Think -> Act"""

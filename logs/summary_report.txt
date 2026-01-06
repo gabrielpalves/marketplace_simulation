@@ -1,0 +1,43 @@
+======================================================================
+MARKET SIMULATION SUMMARY REPORT
+======================================================================
+
+📊 MARKET STATISTICS
+----------------------------------------------------------------------
+Total Trades Executed: 19
+Total Trading Volume: $8201533.80
+Average Trade Value: $431659.67
+Average Price per Unit: $21582.70
+Price Range: $0.50 - $400000.00
+Price Volatility (Std Dev): $91666.53
+Total Wood Traded: 620 units
+
+👥 TRADER STATISTICS
+----------------------------------------------------------------------
+Unique Sellers: 12
+Unique Buyers: 10
+Total Active Traders: 17
+
+🏆 TOP PERFORMERS
+----------------------------------------------------------------------
+
+Top 5 Sellers (by number of sales):
+  1. Generous_Gina: 4 sales
+  2. Newbie_Ned: 4 sales
+  3. Old_Widow_May: 2 sales
+  4. Young_Silas: 1 sales
+  5. Greedy_Gus: 1 sales
+
+Top 5 Buyers (by number of purchases):
+  1. Furniture_Maker_Ann: 4 purchases
+  2. Wealthy_Landowner: 3 purchases
+  3. City_Builder_Mark: 3 purchases
+  4. Scalper_Sam: 2 purchases
+  5. Generous_Gina: 2 purchases
+
+Top 5 Sellers (by volume):
+  1. Scalper_Sam: $8000000.00
+  2. Greedy_Gus: $200000.00
+  3. Generous_Gina: $675.50
+  4. Market_Bot_X: $210.00
+  5. Old_Tom: $125.00
